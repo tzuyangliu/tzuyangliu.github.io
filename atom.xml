@@ -5,9 +5,9 @@
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://tzuyangliu.github.io/"/>
+  <link href="http://blog.zyliu.com/"/>
   <updated>2017-01-23T15:58:12.000Z</updated>
-  <id>http://tzuyangliu.github.io/</id>
+  <id>http://blog.zyliu.com/</id>
   
   <author>
     <name>imzyliu</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>制作并发布 CocoaPods 库</title>
-    <link href="http://tzuyangliu.github.io/2015/11/24/create-and-publish-cocoapods-spec/"/>
-    <id>http://tzuyangliu.github.io/2015/11/24/create-and-publish-cocoapods-spec/</id>
+    <link href="http://blog.zyliu.com/2015/11/24/create-and-publish-cocoapods-spec/"/>
+    <id>http://blog.zyliu.com/2015/11/24/create-and-publish-cocoapods-spec/</id>
     <published>2015-11-23T20:04:03.000Z</published>
     <updated>2017-01-23T15:58:12.000Z</updated>
     
@@ -36,8 +36,8 @@
   
   <entry>
     <title>敏捷开发之 Scrum</title>
-    <link href="http://tzuyangliu.github.io/2015/11/15/scrum/"/>
-    <id>http://tzuyangliu.github.io/2015/11/15/scrum/</id>
+    <link href="http://blog.zyliu.com/2015/11/15/scrum/"/>
+    <id>http://blog.zyliu.com/2015/11/15/scrum/</id>
     <published>2015-11-14T19:41:22.000Z</published>
     <updated>2017-01-23T15:58:12.000Z</updated>
     
@@ -54,8 +54,8 @@
   
   <entry>
     <title>初探 LivePhoto</title>
-    <link href="http://tzuyangliu.github.io/2015/10/24/start-using-livephoto/"/>
-    <id>http://tzuyangliu.github.io/2015/10/24/start-using-livephoto/</id>
+    <link href="http://blog.zyliu.com/2015/10/24/start-using-livephoto/"/>
+    <id>http://blog.zyliu.com/2015/10/24/start-using-livephoto/</id>
     <published>2015-10-23T16:36:53.000Z</published>
     <updated>2017-01-23T15:58:12.000Z</updated>
     
@@ -72,8 +72,8 @@
   
   <entry>
     <title>iPhone 接近感应器的坑及解决方案</title>
-    <link href="http://tzuyangliu.github.io/2015/09/09/ios-proximity-state-bug-and-solution/"/>
-    <id>http://tzuyangliu.github.io/2015/09/09/ios-proximity-state-bug-and-solution/</id>
+    <link href="http://blog.zyliu.com/2015/09/09/ios-proximity-state-bug-and-solution/"/>
+    <id>http://blog.zyliu.com/2015/09/09/ios-proximity-state-bug-and-solution/</id>
     <published>2015-09-08T17:28:00.000Z</published>
     <updated>2017-01-23T15:58:12.000Z</updated>
     
@@ -90,8 +90,8 @@
   
   <entry>
     <title>Swift 学习笔记</title>
-    <link href="http://tzuyangliu.github.io/2015/08/07/swift-for-the-really-impatient-note/"/>
-    <id>http://tzuyangliu.github.io/2015/08/07/swift-for-the-really-impatient-note/</id>
+    <link href="http://blog.zyliu.com/2015/08/07/swift-for-the-really-impatient-note/"/>
+    <id>http://blog.zyliu.com/2015/08/07/swift-for-the-really-impatient-note/</id>
     <published>2015-08-06T16:27:00.000Z</published>
     <updated>2017-01-23T15:58:12.000Z</updated>
     
@@ -108,8 +108,8 @@
   
   <entry>
     <title>使用 Ghost 搭建博客</title>
-    <link href="http://tzuyangliu.github.io/2015/07/23/make-a-blog-with-ghost/"/>
-    <id>http://tzuyangliu.github.io/2015/07/23/make-a-blog-with-ghost/</id>
+    <link href="http://blog.zyliu.com/2015/07/23/make-a-blog-with-ghost/"/>
+    <id>http://blog.zyliu.com/2015/07/23/make-a-blog-with-ghost/</id>
     <published>2015-07-23T06:06:00.000Z</published>
     <updated>2017-01-23T15:58:12.000Z</updated>
     
@@ -126,8 +126,8 @@
   
   <entry>
     <title>iOS 计时的实现</title>
-    <link href="http://tzuyangliu.github.io/2015/04/19/timer-in-ios/"/>
-    <id>http://tzuyangliu.github.io/2015/04/19/timer-in-ios/</id>
+    <link href="http://blog.zyliu.com/2015/04/19/timer-in-ios/"/>
+    <id>http://blog.zyliu.com/2015/04/19/timer-in-ios/</id>
     <published>2015-04-18T19:04:00.000Z</published>
     <updated>2017-01-23T15:58:12.000Z</updated>
     
@@ -144,8 +144,8 @@
   
   <entry>
     <title>使用 Method Swizzling</title>
-    <link href="http://tzuyangliu.github.io/2015/04/03/objc-use-method-swizzling/"/>
-    <id>http://tzuyangliu.github.io/2015/04/03/objc-use-method-swizzling/</id>
+    <link href="http://blog.zyliu.com/2015/04/03/objc-use-method-swizzling/"/>
+    <id>http://blog.zyliu.com/2015/04/03/objc-use-method-swizzling/</id>
     <published>2015-04-02T20:52:00.000Z</published>
     <updated>2017-01-23T15:58:12.000Z</updated>
     
