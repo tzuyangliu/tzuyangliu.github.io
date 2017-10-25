@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="实习的时候写公司产品，有个用到接近感应器的功能。就比如打电话，电话接通时开启接近感应器，侦测到接近状态改变（接近/离开）时执行相应的操作——当开启接近感应器时，系统会在接近时熄灭屏幕，离开时再点亮屏幕，等等。但是在这个过程中有bug存在，导致系统接口给的结果不一定是准确的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iPhone 接近感应器的坑及解决方案">
+<meta property="og:url" content="http://tzuyangliu.github.io/2015/09/09/ios-proximity-state-bug-and-solution/index.html">
+<meta property="og:site_name" content="imzyliu&#39;s blog">
+<meta property="og:description" content="实习的时候写公司产品，有个用到接近感应器的功能。就比如打电话，电话接通时开启接近感应器，侦测到接近状态改变（接近/离开）时执行相应的操作——当开启接近感应器时，系统会在接近时熄灭屏幕，离开时再点亮屏幕，等等。但是在这个过程中有bug存在，导致系统接口给的结果不一定是准确的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-01-23T15:58:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iPhone 接近感应器的坑及解决方案">
+<meta name="twitter:description" content="实习的时候写公司产品，有个用到接近感应器的功能。就比如打电话，电话接通时开启接近感应器，侦测到接近状态改变（接近/离开）时执行相应的操作——当开启接近感应器时，系统会在接近时熄灭屏幕，离开时再点亮屏幕，等等。但是在这个过程中有bug存在，导致系统接口给的结果不一定是准确的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://tzuyangliu.github.io/2015/09/09/ios-proximity-state-bug-and-solution/"/>
+
+
+
+
+
+  <title>iPhone 接近感应器的坑及解决方案 | imzyliu's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">imzyliu's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://tzuyangliu.github.io/2015/09/09/ios-proximity-state-bug-and-solution/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="imzyliu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="imzyliu's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iPhone 接近感应器的坑及解决方案</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-09-09T01:28:00+08:00">
+                2015-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>实习的时候写公司产品，有个用到接近感应器的功能。就比如打电话，电话接通时开启接近感应器，侦测到接近状态改变（接近/离开）时执行相应的操作——当开启接近感应器时，系统会在接近时熄灭屏幕，离开时再点亮屏幕，等等。但是在这个过程中有bug存在，导致系统接口给的结果不一定是准确的<a id="more"></a>。</p>
+<h3 id="先说理论上的实现"><a href="#先说理论上的实现" class="headerlink" title="先说理论上的实现"></a>先说理论上的实现</h3><p>在 <code>UIKit/UIDevice.h</code> 中的 <code>UIDevice</code> 类（iOS 8.4  SDK），有如下属性<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">@property(nonatomic,getter=isProximityMonitoringEnabled) BOOL proximityMonitoringEnabled NS_AVAILABLE_IOS(3_0); // default is NO</div><div class="line">@property(nonatomic,readonly)                            BOOL proximityState NS_AVAILABLE_IOS(3_0);  // always returns NO if no proximity detector</div></pre></td></tr></table></figure></p>
+<p><code>proximityMonitoringEnabled</code> 用来标识是否开启接近感应器，如果为 <code>YES</code> 则开启。<code>proximityState</code> 为当前的接近状态，如果为 <code>YES</code> 则为接近（触发），否则为离开（未触发），需要的时候可以直接拿来用。</p>
+<p>以及用于 <code>UINotificationCenter</code> 的键：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">UIKIT_EXTERN NSString *const UIDeviceProximityStateDidChangeNotification NS_AVAILABLE_IOS(3_0);</div></pre></td></tr></table></figure></p>
+<p>于是如果需要在某个地方使用接近感应器，可以注册通知并且开启接近感应器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">UIDevice *device = [UIDevice currentDevice];</div><div class="line">[device setProximityMonitoringEnabled:YES];</div><div class="line">if ([device isProximityMonitoringEnabled]) &#123;</div><div class="line">    [[NSNotificationCenter defaultCenter] addObserver:self</div><div class="line">                                             selector:@selector(proximityStateDidChange:)</div><div class="line">                                                 name:UIDeviceProximityStateDidChangeNotification object:nil];</div><div class="line">&#125;else &#123;</div><div class="line">    NSLog(@&quot;No Proximity Sensor&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后在 <code>-(void)proximityStateDidChange:(BOOL)</code> 方法里面实现需要做的处理。当然记得在不需要的时候取消注册通知、停止接近检测。</p>
+<p>这样看起来是没问题的。</p>
+<h3 id="突然问题来了"><a href="#突然问题来了" class="headerlink" title="突然问题来了"></a>突然问题来了</h3><p>直到有一天发现了一个问题：在已经开启接近检测的情况下，同时触发接近感应器和进入后台（按 Home 键的同时捂住听筒），这样会在熄灭屏幕的情况下进入了后台。手离开听筒，屏幕再次点亮。再进入前台，发现 <code>[UIDevice currentDevice].proximityState</code> 的值为 <code>YES</code> 。也就是说，触发接近感应器的同时进入后台，在后台时离开接近感应器是不会刷新接近状态的（会保持在触发状态）。在这种情况下，系统提供的接口结果不正确。经验证，从 <code>iOS 7</code> 到 <code>iOS 9</code> 都存在这个问题。只有再次触发接近感应器并离开时，才会收到 <code>UIDeviceProximityStateDidChangeNotification</code> 通知，也就是变回正常了。这样看来，<code>UIDevice</code> 的 <code>proximityState</code> 属性也是依赖于上面的通知更新吧。</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>好了，既然 <code>iOS</code> 留下了这个 Bug，下面就是如何想办法解决它。对于接近感应器，我们需要的很简单，就是在任何情况下拿到的数据都是真实有效的。有这样一种思路：每次从后台进入前台时，是用户在屏幕亮着并且可操作的情况下进来的，进来之前的瞬间不可能是接近状态。所以在进入前台后到收到接近状态改变的通知前的这段时间，可以推测是非接近状态。</p>
+<p>在这样的思路下，我们就可以做一个简单的接近检测的工具类，添加一个 <code>proximityState</code> 属性，将 <code>get</code> 方法写为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">- (BOOL)proximityState&#123;</div><div class="line">    if (self.isWaitingProximityStateUpdate) &#123;</div><div class="line">        return NO;</div><div class="line">    &#125;else &#123;</div><div class="line">        return [[UIDevice currentDevice] proximityState];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>其中，<code>isWaitingProximityStateUpdate</code> 表示是否为进入前台后到收到接近状态改变通知前的这段时间。每次进入前台就把这个属性置为 <code>YES</code>，收到接近状态改变通知就置为 <code>NO</code>。</p>
+<p>这样，通过这个工具类的 <code>proximityState</code> 属性，在任何情况下拿到的结果都是真实有效的。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/07/swift-for-the-really-impatient-note/" rel="next" title="Swift 学习笔记">
+                <i class="fa fa-chevron-left"></i> Swift 学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/10/24/start-using-livephoto/" rel="prev" title="初探 LivePhoto">
+                初探 LivePhoto <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">imzyliu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#先说理论上的实现"><span class="nav-number">1.</span> <span class="nav-text">先说理论上的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#突然问题来了"><span class="nav-number">2.</span> <span class="nav-text">突然问题来了</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案"><span class="nav-number">3.</span> <span class="nav-text">解决方案</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">imzyliu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

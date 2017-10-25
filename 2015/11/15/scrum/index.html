@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="之前在实习的时候接触了 Scrum 开发流程，对于我的团队冰岩作坊来说，有很多可以学习的地方。今天就介绍下 Scrum 开发流程，同时提出了在团队里面实践此方法的思考">
+<meta property="og:type" content="article">
+<meta property="og:title" content="敏捷开发之 Scrum">
+<meta property="og:url" content="http://tzuyangliu.github.io/2015/11/15/scrum/index.html">
+<meta property="og:site_name" content="imzyliu&#39;s blog">
+<meta property="og:description" content="之前在实习的时候接触了 Scrum 开发流程，对于我的团队冰岩作坊来说，有很多可以学习的地方。今天就介绍下 Scrum 开发流程，同时提出了在团队里面实践此方法的思考">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xkkiq.com1.z0.glb.clouddn.com/scrum-1-new.png">
+<meta property="og:image" content="http://7xkkiq.com1.z0.glb.clouddn.com/scrum-2.png">
+<meta property="og:image" content="http://7xkkiq.com1.z0.glb.clouddn.com/scrum-6.jpeg">
+<meta property="og:image" content="http://7xkkiq.com1.z0.glb.clouddn.com/scrum-3-new.png">
+<meta property="og:image" content="http://7xkkiq.com1.z0.glb.clouddn.com/scrum-4.png">
+<meta property="og:image" content="http://7xkkiq.com1.z0.glb.clouddn.com/scrum-5.png">
+<meta property="og:updated_time" content="2017-01-23T15:58:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="敏捷开发之 Scrum">
+<meta name="twitter:description" content="之前在实习的时候接触了 Scrum 开发流程，对于我的团队冰岩作坊来说，有很多可以学习的地方。今天就介绍下 Scrum 开发流程，同时提出了在团队里面实践此方法的思考">
+<meta name="twitter:image" content="http://7xkkiq.com1.z0.glb.clouddn.com/scrum-1-new.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://tzuyangliu.github.io/2015/11/15/scrum/"/>
+
+
+
+
+
+  <title>敏捷开发之 Scrum | imzyliu's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">imzyliu's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://tzuyangliu.github.io/2015/11/15/scrum/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="imzyliu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="imzyliu's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">敏捷开发之 Scrum</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-15T03:41:22+08:00">
+                2015-11-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>之前在实习的时候接触了 Scrum 开发流程，对于我的团队冰岩作坊来说，有很多可以学习的地方。今天就介绍下 Scrum 开发流程，同时提出了在团队里面实践此方法的思考<a id="more"></a>。</p>
+<h3 id="前言：Why-Scrum"><a href="#前言：Why-Scrum" class="headerlink" title="前言：Why Scrum?"></a>前言：Why Scrum?</h3><p>团队现有的开发方法：瀑布式开发 or 迭代开发？</p>
+<p>*文章很多地方还没完成，只是初稿。</p>
+<h3 id="敏捷开发"><a href="#敏捷开发" class="headerlink" title="敏捷开发"></a>敏捷开发</h3><p>敏捷开发(Agile Development)是一种以人为核心、迭代、循序渐进的开发方法。</p>
+<h4 id="以人为核心"><a href="#以人为核心" class="headerlink" title="以人为核心"></a>以人为核心</h4><p>敏捷开发它只写有必要的文档，或尽量少写文档，敏捷开发注重的是人与人之间，面对面的交流，所以它强调以人为核心。</p>
+<h4 id="迭代"><a href="#迭代" class="headerlink" title="迭代"></a>迭代</h4><p>把一个复杂且开发周期很长的开发任务，分解为很多小周期可完成的任务，这样的一个周期就是一次迭代的过程；同时每一次迭代都可以生产或开发出一个可以交付的软件产品。</p>
+<h3 id="Scrum"><a href="#Scrum" class="headerlink" title="Scrum"></a>Scrum</h3><p>Scrum 是一种敏捷开发的方法学，用于迭代式增量软件开发过程。<br>Scrum 一词源于橄榄球运动中的争球。</p>
+<h3 id="Scrum-开发流程的角色"><a href="#Scrum-开发流程的角色" class="headerlink" title="Scrum 开发流程的角色"></a>Scrum 开发流程的角色</h3><h4 id="产品负责人（Product-Owner）"><a href="#产品负责人（Product-Owner）" class="headerlink" title="产品负责人（Product Owner）"></a>产品负责人（Product Owner）</h4><p>主要负责确定产品的功能和达到要求的标准，指定软件的发布日期和交付的内容，同时有权力接受或拒绝开发团队的工作成果。</p>
+<h4 id="流程管理员（Scrum-Master）"><a href="#流程管理员（Scrum-Master）" class="headerlink" title="流程管理员（Scrum Master）"></a>流程管理员（Scrum Master）</h4><p>主要负责整个 Scrum 流程在项目中的顺利实施和进行，以及清除挡在客户和开发工作之间的沟通障碍，使得客户可以直接驱动开发。</p>
+<h4 id="开发团队（Scrum-Team）"><a href="#开发团队（Scrum-Team）" class="headerlink" title="开发团队（Scrum Team）"></a>开发团队（Scrum Team）</h4><p>主要负责软件产品在 Scrum 规定流程下进行开发工作，人数控制在 5~10 人左右，每个成员可能负责不同的技术方面，但要求每成员必须要有很强的自我管理能力，同时具有一定的表达能力；成员可以采用任何工作方式，只要能达到 Sprint 的目标。</p>
+<h3 id="Sprint：冲刺"><a href="#Sprint：冲刺" class="headerlink" title="Sprint：冲刺"></a>Sprint：冲刺</h3><p>Sprint 是 Scrum 的核心，其周期为小于或者等于一个月，其产出是“完成的”、可用的、潜在可发布的产品增量。Sprint 的长度在整个开发过程中保持一致。新的 Sprint 在上一个 Sprint 完成之后立即开始。</p>
+<p>Sprint 由 Sprint 计划会议、每日 Scrum 站会、开发工作、Sprint 评审会议和 Sprint 回顾会议构成。</p>
+<p>每个 Sprint 都可以被视为一个项目，为期不超过一个月。和普通项目一样，Sprint 的目标也是完成一些事情。每个 Sprint 都会定义要开发什么东西，还有一份设计和灵活的计划能够指导开发过程、工作内容和最终结果。</p>
+<p>Sprint 的周期被限制在一个月内。如果 Sprint 周期过长，对“要构建什么东西”的定义就有可能会改变，复杂度和风险也有可能会增加。Sprint 通过确保至少每月一次对达 成目标的进度进行检视和调整，来实现可预见性。Sprint 也把风险限制在一个月的成本上。</p>
+<h3 id="Scrum-的流程"><a href="#Scrum-的流程" class="headerlink" title="Scrum 的流程"></a>Scrum 的流程</h3><p><img src="http://7xkkiq.com1.z0.glb.clouddn.com/scrum-1-new.png" alt=""></p>
+<h4 id="冲刺计划会议（Sprint-Planning）"><a href="#冲刺计划会议（Sprint-Planning）" class="headerlink" title="冲刺计划会议（Sprint Planning）"></a>冲刺计划会议（Sprint Planning）</h4><ol>
+<li>产品负责人根据优先级列需求</li>
+<li>开发团队每个人根据每个需求估算预计完成时间，最后团队根据每个人的预计来确定这项需求需要时间，然后将估计的时间加到总预计完成时间</li>
+<li>当每个人的时间被占满，则不再继续添加需求</li>
+</ol>
+<blockquote>
+<p>关于估算完成时间的方法：<br><img src="http://7xkkiq.com1.z0.glb.clouddn.com/scrum-2.png" alt=""></p>
+</blockquote>
+<p>通过此会议，得到了：</p>
+<ol>
+<li>此次冲刺需要做什么事情</li>
+<li>完成每项事情分别预计需要花费的时间<h4 id="每日站会和开发工作（Daily-Scrum）"><a href="#每日站会和开发工作（Daily-Scrum）" class="headerlink" title="每日站会和开发工作（Daily Scrum）"></a>每日站会和开发工作（Daily Scrum）</h4><h5 id="每日站会"><a href="#每日站会" class="headerlink" title="每日站会"></a>每日站会</h5>参会人员站立开会，任务看板要保证让每个人看到，当每个人发言完后，要走到任务版前更新自己的燃尽图。<h5 id="任务看板与燃尽图"><a href="#任务看板与燃尽图" class="headerlink" title="任务看板与燃尽图"></a>任务看板与燃尽图</h5><img src="http://7xkkiq.com1.z0.glb.clouddn.com/scrum-6.jpeg" alt=""><h4 id="冲刺评审会议（Sprint-demo）"><a href="#冲刺评审会议（Sprint-demo）" class="headerlink" title="冲刺评审会议（Sprint demo）"></a>冲刺评审会议（Sprint demo）</h4>*稍后补充<h4 id="冲刺回顾会议（Sprint-retrospective）"><a href="#冲刺回顾会议（Sprint-retrospective）" class="headerlink" title="冲刺回顾会议（Sprint retrospective）"></a>冲刺回顾会议（Sprint retrospective）</h4>*稍后补充<h4 id="流程总结"><a href="#流程总结" class="headerlink" title="流程总结"></a>流程总结</h4>整个开发时程将依据团队的选择，分为若干个次固定期间的冲刺(Sprint)，期间长度通常介于2~4周之间。每一个冲刺开始前，由产品拥有者与 Scrum 团队会同召开一个冲刺规划会议(Sprint planning)，自产品待办目录中选择若干个故事，由 Scrum 团队一起将选中的每一个故事分割成为数个工作(Task)，将之纪录于该次冲刺的待办目录(Sprint backlog)之中。通常 Sprint planning 的长度以每次不超过4小时为原则。这些工作将由 Scrum 队员领取并在该次冲刺中完成。在当次冲刺即将结束前，由 Scrum 团队对产品拥有者展演已完成的功能及品质特性(Sprint demo)。</li>
+</ol>
+<p>每一个冲刺的最后一项活动为回顾(Sprint retrospective)，由队长主持检讨该次冲刺的好的(Good)与待改进事项(Improvements)。如此周而复始，直到专案结束或完成所有故事。</p>
+<h3 id="附1-Scrum-的实践"><a href="#附1-Scrum-的实践" class="headerlink" title="附1 - Scrum 的实践"></a>附1 - Scrum 的实践</h3><p><a href="http://techblog.youdao.com/?p=373" target="_blank" rel="external">有道云笔记 - 敏捷开发的实战经验</a></p>
+<h3 id="附2-Scrum-如何在冰岩团队内实施"><a href="#附2-Scrum-如何在冰岩团队内实施" class="headerlink" title="附2 - Scrum 如何在冰岩团队内实施"></a>附2 - Scrum 如何在冰岩团队内实施</h3><h4 id="角色"><a href="#角色" class="headerlink" title="角色"></a>角色</h4><p>对于团队内一个典型的项目组：</p>
+<ul>
+<li>产品经理（PM）→ 产品负责人（PO）&amp; 客户（？）</li>
+<li>？→ 流程管理员（SM）</li>
+<li>项目组其他成员 → 开发团队（ST）</li>
+</ul>
+<p><img src="http://7xkkiq.com1.z0.glb.clouddn.com/scrum-3-new.png" alt=""><br><img src="http://7xkkiq.com1.z0.glb.clouddn.com/scrum-4.png" alt=""></p>
+<h4 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h4><ul>
+<li>每日站会 -&gt; 每日报告</li>
+<li>冲刺评审会议、冲刺回顾会议 -&gt; 冲刺结束会议</li>
+<li>任务看板：Online</li>
+<li>燃尽图：Online<br><img src="http://7xkkiq.com1.z0.glb.clouddn.com/scrum-5.png" alt=""><h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><a href="http://www.scrumguides.org/docs/scrumguide/v1/Scrum-Guide-CN.pdf" target="_blank" rel="external">Scrum Guide</a></li>
+</ul>
+<p><a href="http://scrum.tw/index.php/tw/scrum.html" target="_blank" rel="external">A Simple Intro of Scrum</a></p>
+<p><a href="http://www.cnblogs.com/taven/archive/2010/10/17/1853386.html" target="_blank" rel="external">敏捷开发之Scrum扫盲篇</a></p>
+<p><a href="http://techblog.youdao.com/?p=373" target="_blank" rel="external">敏捷开发的实战经验</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/24/start-using-livephoto/" rel="next" title="初探 LivePhoto">
+                <i class="fa fa-chevron-left"></i> 初探 LivePhoto
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/11/24/create-and-publish-cocoapods-spec/" rel="prev" title="制作并发布 CocoaPods 库">
+                制作并发布 CocoaPods 库 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">imzyliu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言：Why-Scrum"><span class="nav-number">1.</span> <span class="nav-text">前言：Why Scrum?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#敏捷开发"><span class="nav-number">2.</span> <span class="nav-text">敏捷开发</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#以人为核心"><span class="nav-number">2.1.</span> <span class="nav-text">以人为核心</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#迭代"><span class="nav-number">2.2.</span> <span class="nav-text">迭代</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scrum"><span class="nav-number">3.</span> <span class="nav-text">Scrum</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scrum-开发流程的角色"><span class="nav-number">4.</span> <span class="nav-text">Scrum 开发流程的角色</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#产品负责人（Product-Owner）"><span class="nav-number">4.1.</span> <span class="nav-text">产品负责人（Product Owner）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#流程管理员（Scrum-Master）"><span class="nav-number">4.2.</span> <span class="nav-text">流程管理员（Scrum Master）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开发团队（Scrum-Team）"><span class="nav-number">4.3.</span> <span class="nav-text">开发团队（Scrum Team）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sprint：冲刺"><span class="nav-number">5.</span> <span class="nav-text">Sprint：冲刺</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scrum-的流程"><span class="nav-number">6.</span> <span class="nav-text">Scrum 的流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#冲刺计划会议（Sprint-Planning）"><span class="nav-number">6.1.</span> <span class="nav-text">冲刺计划会议（Sprint Planning）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#每日站会和开发工作（Daily-Scrum）"><span class="nav-number">6.2.</span> <span class="nav-text">每日站会和开发工作（Daily Scrum）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#每日站会"><span class="nav-number">6.2.1.</span> <span class="nav-text">每日站会</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#任务看板与燃尽图"><span class="nav-number">6.2.2.</span> <span class="nav-text">任务看板与燃尽图</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#冲刺评审会议（Sprint-demo）"><span class="nav-number">6.3.</span> <span class="nav-text">冲刺评审会议（Sprint demo）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#冲刺回顾会议（Sprint-retrospective）"><span class="nav-number">6.4.</span> <span class="nav-text">冲刺回顾会议（Sprint retrospective）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#流程总结"><span class="nav-number">6.5.</span> <span class="nav-text">流程总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#附1-Scrum-的实践"><span class="nav-number">7.</span> <span class="nav-text">附1 - Scrum 的实践</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#附2-Scrum-如何在冰岩团队内实施"><span class="nav-number">8.</span> <span class="nav-text">附2 - Scrum 如何在冰岩团队内实施</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#角色"><span class="nav-number">8.1.</span> <span class="nav-text">角色</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#流程"><span class="nav-number">8.2.</span> <span class="nav-text">流程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">9.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">imzyliu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

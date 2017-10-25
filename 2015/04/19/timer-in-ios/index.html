@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="开发过程中，很多地方需要结合计时来实现，比如发送验证码每隔 1 秒钟更新界面显示，微博客户端每隔 10 分钟拉取最新微博，等等。在这种需求下，有下面几种做法可以选择">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 计时的实现">
+<meta property="og:url" content="http://tzuyangliu.github.io/2015/04/19/timer-in-ios/index.html">
+<meta property="og:site_name" content="imzyliu&#39;s blog">
+<meta property="og:description" content="开发过程中，很多地方需要结合计时来实现，比如发送验证码每隔 1 秒钟更新界面显示，微博客户端每隔 10 分钟拉取最新微博，等等。在这种需求下，有下面几种做法可以选择">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-01-23T15:58:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS 计时的实现">
+<meta name="twitter:description" content="开发过程中，很多地方需要结合计时来实现，比如发送验证码每隔 1 秒钟更新界面显示，微博客户端每隔 10 分钟拉取最新微博，等等。在这种需求下，有下面几种做法可以选择">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://tzuyangliu.github.io/2015/04/19/timer-in-ios/"/>
+
+
+
+
+
+  <title>iOS 计时的实现 | imzyliu's blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">imzyliu's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://tzuyangliu.github.io/2015/04/19/timer-in-ios/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="imzyliu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="imzyliu's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS 计时的实现</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-04-19T03:04:00+08:00">
+                2015-04-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>开发过程中，很多地方需要结合计时来实现，比如发送验证码每隔 1 秒钟更新界面显示，微博客户端每隔 10 分钟拉取最新微博，等等。在这种需求下，有下面几种做法可以选择<a id="more"></a>。</p>
+<h3 id="一、NSTimer"><a href="#一、NSTimer" class="headerlink" title="一、NSTimer"></a>一、NSTimer</h3><h4 id="创建-NSTimer-实例"><a href="#创建-NSTimer-实例" class="headerlink" title="创建 NSTimer 实例"></a>创建 NSTimer 实例</h4><p>Cocoa 框架提供了 <code>NSTimer</code> 来实现这样的功能。Apple 官方对 <code>NSTimer</code> 的定义是</p>
+<blockquote>
+<p>You use the NSTimer class to create timer objects or, more simply, timers. A timer waits until a certain time interval has elapsed and then fires, sending a specified message to a target object.</p>
+<p>使用 NSTimer 类来创建计时器对象。一个计时器对象会在等待一个确定的时间间隔后给一个目标实例发送特定的消息。</p>
+</blockquote>
+<p>如果要创建一个 <code>NSTimer</code>，最简单的做法是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">+ (NSTimer * nonnull)scheduledTimerWithTimeInterval:(NSTimeInterval)seconds </div><div class="line">                                         invocation:(NSInvocation * non null)invocation </div><div class="line">                                            repeats:(BOOL)repeats</div></pre></td></tr></table></figure>
+<p>其中 <code>seconds</code> 是延迟的时长，<code>invocation</code> 是包含相关信息的 <code>NSInvocation</code> 实例，<code>repeats</code> 表示是否重复，如果为 <code>YES</code> 则一直重复，直到手动停止。同样地，下面这个方法也可以得到一个 <code>NSTimer</code> 实例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">+ (NSTimer * nonnull)scheduledTimerWithTimeInterval:(NSTimeInterval)seconds                                        </div><div class="line">                                             target:(id nonnull)target</div><div class="line">                                           selector:(SEL nonnull)aSelector</div><div class="line">                                           userInfo:(id nullable)userInfo</div><div class="line">                                            repeats:(BOOL)repeats</div></pre></td></tr></table></figure>
+<p>其中 <code>seconds</code>、<code>repeat</code> 的意义与上面相同。<code>target</code> 是 <code>aSelector</code> 的执行实例，<code>aSelector</code> 是发送给 <code>target</code> 的消息。需要注意的是，<code>NSTimer</code> 实例在发送 <code>aSelector</code> 时会把自己作为参数传递过去，也就是说这个方法可以写成</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (void)timerFireMethod:(NSTimer *)timer &#123;</div><div class="line">	// 做相应的操作</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>方便获取 <code>NSTimer</code> 实例，在方法中写入需要执行的代码。</p>
+<p>由于 <code>NSTimer</code> 实例会强引用 <code>target</code>，于是在 <code>NSTimer</code> 实例与 <code>target</code> 之间产生了循环引用，所以要在释放 <code>target</code> 时释放 <code>NSTimer</code> 实例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (void) dealloc &#123;</div><div class="line">    [timer invalidate];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="开启计时"><a href="#开启计时" class="headerlink" title="开启计时"></a>开启计时</h4><p>使用以下方法来激活 <code>NSTimer</code> 实例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (void)fire</div></pre></td></tr></table></figure>
+<p>需要注意的是，<code>NSTimer</code> 需要依赖于 <code>NSRunloop</code>，在 iOS 中默认只有主线程开启了 Runloop。所以如果要在其他线程这样做必须先开启对应线程的 Runloop，然后获取对应的 Runloop 实例，使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (void)addTimer:(NSTimer *)timer forMode:(NSString *)mode</div></pre></td></tr></table></figure>
+<p>方法将 <code>NSTimer</code> 实例添加并激活。</p>
+<h4 id="停止计时"><a href="#停止计时" class="headerlink" title="停止计时"></a>停止计时</h4><p>要停止已经运行中的 <code>NSTimer</code> 实例，使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (void)invalidate</div></pre></td></tr></table></figure>
+<h4 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h4><p>关于 NSTimer 的内存管理，先引用一段来自 <a href="http://stackoverflow.com/questions/1449035/how-do-i-use-nstimer" target="_blank" rel="external">StackOverflow</a> 的答案</p>
+<blockquote>
+<p>Because the run loop maintains the timer, from the perspective of memory management there’s typically no need to keep a reference to a timer after you’ve scheduled it. Since the timer is passed as an argument when you specify its method as a selector, you can invalidate a repeating timer when appropriate within that method. In many situations, however, you also want the option of invalidating the timer—perhaps even before it starts. In this case, you do need to keep a reference to the timer, so that you can send it an invalidate message whenever appropriate. If you create an unscheduled timer (see “Unscheduled Timers”), then you must maintain a strong reference to the timer (in a reference-counted environment, you retain it) so that it is not deallocated before you use it.</p>
+</blockquote>
+<p>大意为 <code>NSTimer</code> 实例会被 <code>NSRunloop</code> 实例强引用，所以没有必要在其他地方再次强引用它。需要结束的时候在对应的 <code>- (void)timerFireMethod:(NSTimer *)timer</code> 里面调用 <code>- (void)invalidate</code> 即可。在被 Runloop 强引用前（即还未加入到 Runloop 中），则需要保持一个强引用来保证对它的访问。</p>
+<blockquote>
+<p>Setting timer to nil is for safety. The call to invalidate will result in the timer being released (by the run loop), so it is unsafe to keep a reference that points to it. Setting the local reference to nil keeps things kosher.</p>
+</blockquote>
+<p>最后将计时器实例置为 <code>nil</code> 是为了安全起见。<code>- (void)invalidate</code> 方法会使计时器被释放（由 Runloop 控制），如果还有对计时器的引用是不安全的。</p>
+<h4 id="更优雅的实现"><a href="#更优雅的实现" class="headerlink" title="更优雅的实现"></a>更优雅的实现</h4><p>综合上面的讨论，可以看出还是可以通过一些技巧来使用<code>NSTimer</code>，充分利用其优点并避免造成内存问题。</p>
+<p>后面要说的这个实现的理论依据是：</p>
+<ul>
+<li><code>NSTimer</code> 实例被 <code>NSRunloop</code> 实例强引用，所以它不会被提前释放，无需额外对它进行强引用；</li>
+<li><code>NSTimer</code> 实例在发送 <code>aSelector</code> 时会把自己作为参数传递过去，所以在 <code>- (void)timerFireMethod:(NSTimer *)timer</code> 方法里面可以直接使用 <code>[timer invalidate]</code> 来结束并释放它；</li>
+<li>初始化 <code>NSTimer</code> 时传递的 <code>target</code> 可以是 <code>__weak</code></li>
+</ul>
+<p>于是可以做一个名为 <code>WeakTimerTarget</code> 的类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">[...]</div><div class="line">@implementation WeakTimerTarget</div><div class="line">&#123;</div><div class="line">    __weak target;</div><div class="line">    SEL selector;</div><div class="line">&#125;</div><div class="line">[...]</div><div class="line">- (void)timerFireMethod:(NSTimer *)timer</div><div class="line">&#123;</div><div class="line">    if(target)</div><div class="line">    &#123;</div><div class="line">        [target performSelector:selector withObject:timer];</div><div class="line">    &#125;</div><div class="line">    else</div><div class="line">    &#123;</div><div class="line">        [timer invalidate];</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">@end</div></pre></td></tr></table></figure></p>
+<p>在初始化 <code>NSTimer</code> 实例时，使用 <code>WeakTimerTarget</code> 来代替原来的 <code>target</code>，即可做到 <code>NSTimer</code> 实例弱引用 <code>target</code>。</p>
+<p>我的好队友 <a href="http://www.weibo.com/u/1641167047" target="_blank" rel="external">@callmewhy</a> 已经将这套逻辑封装好并开源，可以移步 <a href="https://github.com/ChatGame/HWWeakTimer" target="_blank" rel="external">GitHub: HWWeakTimer</a> 查看。</p>
+<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><p><a href="https://developer.apple.com/library/prerelease/ios/documentation/Cocoa/Reference/Foundation/Classes/NSTimer_Class/index.html" target="_blank" rel="external">NSTimer Class Reference</a></p>
+<p><a href="https://developer.apple.com/library/prerelease/ios/documentation/Cocoa/Conceptual/Timers/Timers.html#//apple_ref/doc/uid/10000061i" target="_blank" rel="external">Timer Programming Topics</a></p>
+<p><a href="https://developer.apple.com/library/prerelease/ios/documentation/Cocoa/Conceptual/Multithreading/Introduction/Introduction.html#//apple_ref/doc/uid/10000057i" target="_blank" rel="external">Threading Programming Guide</a></p>
+<p><a href="http://stackoverflow.com/questions/16821736/weak-reference-to-nstimer-target-to-prevent-retain-cycle" target="_blank" rel="external">Weak Reference to NSTimer Target To Prevent Retain Cycle</a></p>
+<h3 id="二、GCD-Timer"><a href="#二、GCD-Timer" class="headerlink" title="二、GCD Timer"></a>二、GCD Timer</h3><h4 id="创建-GCD-Timer"><a href="#创建-GCD-Timer" class="headerlink" title="创建 GCD Timer"></a>创建 GCD Timer</h4><p>除了 <code>NSTimer</code>，还可以通过 GCD 来实现计时器。GCD 中的 Timer 比较灵活，使用 dispatch source 实现，对性能的消耗低于 <code>NSTimer</code>，不需要 Runloop，也不容易导致循环引用。</p>
+<p>先实现一个创建 GCD Timer 的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">dispatch_source_t CreateDispatchTimer(double interval, dispatch_time_t startTime, dispatch_queue_t queue, dispatch_block_t block)</div><div class="line">&#123;</div><div class="line">    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);</div><div class="line">    if (timer)</div><div class="line">    &#123;</div><div class="line">        dispatch_source_set_timer(timer, startTime, interval * NSEC_PER_SEC, (1ull * NSEC_PER_SEC) / 10);</div><div class="line">        dispatch_source_set_event_handler(timer, block);</div><div class="line">    &#125;</div><div class="line">    return timer;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后使用此方法创建 GCD Timer 实例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">_timer = CreateDispatchTimer(secondsToFire, startTime, queue, ^&#123;</div><div class="line">	// 做相应的操作</div><div class="line">  	// ...</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h4 id="开启计时-1"><a href="#开启计时-1" class="headerlink" title="开启计时"></a>开启计时</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dispatch_resume(_timer);</div></pre></td></tr></table></figure>
+<h4 id="结束计时"><a href="#结束计时" class="headerlink" title="结束计时"></a>结束计时</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dispatch_source_cancel(_timer);</div></pre></td></tr></table></figure>
+<h4 id="参考资料-1"><a href="#参考资料-1" class="headerlink" title="参考资料"></a>参考资料</h4><p><a href="https://gist.github.com/maicki/7622108" target="_blank" rel="external">TimerWithGCD</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/04/03/objc-use-method-swizzling/" rel="next" title="使用 Method Swizzling">
+                <i class="fa fa-chevron-left"></i> 使用 Method Swizzling
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/07/23/make-a-blog-with-ghost/" rel="prev" title="使用 Ghost 搭建博客">
+                使用 Ghost 搭建博客 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">imzyliu</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、NSTimer"><span class="nav-number">1.</span> <span class="nav-text">一、NSTimer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建-NSTimer-实例"><span class="nav-number">1.1.</span> <span class="nav-text">创建 NSTimer 实例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开启计时"><span class="nav-number">1.2.</span> <span class="nav-text">开启计时</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#停止计时"><span class="nav-number">1.3.</span> <span class="nav-text">停止计时</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存管理"><span class="nav-number">1.4.</span> <span class="nav-text">内存管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更优雅的实现"><span class="nav-number">1.5.</span> <span class="nav-text">更优雅的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考资料"><span class="nav-number">1.6.</span> <span class="nav-text">参考资料</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、GCD-Timer"><span class="nav-number">2.</span> <span class="nav-text">二、GCD Timer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建-GCD-Timer"><span class="nav-number">2.1.</span> <span class="nav-text">创建 GCD Timer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开启计时-1"><span class="nav-number">2.2.</span> <span class="nav-text">开启计时</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结束计时"><span class="nav-number">2.3.</span> <span class="nav-text">结束计时</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考资料-1"><span class="nav-number">2.4.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">imzyliu</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
